@@ -1,0 +1,390 @@
+<title>Tủ Đồ Tulip</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+
+<style>
+  :root{
+    color-scheme: light;
+    --bg: #FFF6F0;
+    --surface: #FFFFFF;
+    --surface-2: #FFFDFB;
+    --ink: #2A1F1B;
+    --ink-muted: #8C7A72;
+    --rose: #E24E71;
+    --rose-strong: #C93A5C;
+    --rose-soft: #FBE4E8;
+    --gold: #C98A2E;
+    --gold-soft: #F6E8D1;
+    --line: #F0E2DB;
+    --shadow: rgba(60, 30, 25, 0.08);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg: #1A1315;
+      --surface: #241A1D;
+      --surface-2: #2B1F22;
+      --ink: #F6EDE9;
+      --ink-muted: #B8A099;
+      --rose: #FF85A1;
+      --rose-strong: #FFA3B7;
+      --rose-soft: #3B2227;
+      --gold: #E8B35C;
+      --gold-soft: #3C2F1C;
+      --line: #3A2A2D;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg: #1A1315;
+    --surface: #241A1D;
+    --surface-2: #2B1F22;
+    --ink: #F6EDE9;
+    --ink-muted: #B8A099;
+    --rose: #FF85A1;
+    --rose-strong: #FFA3B7;
+    --rose-soft: #3B2227;
+    --gold: #E8B35C;
+    --gold-soft: #3C2F1C;
+    --line: #3A2A2D;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+
+  *{ box-sizing: border-box; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "DM Sans", system-ui, sans-serif;
+    padding-inline: 16px;
+    padding-block: 28px 48px;
+    display: flex;
+    justify-content: center;
+  }
+  .page{ width: 100%; max-width: 480px; }
+
+  /* ---------- header ---------- */
+  .brand-mark{
+    width: 46px; height: 46px;
+    border-radius: 14px;
+    background: linear-gradient(155deg, var(--rose) 0%, #F28FA3 100%);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    box-shadow: 0 8px 20px -8px var(--shadow);
+  }
+  .brand-mark svg{ width: 24px; height: 24px; display:block; }
+
+  .handle{
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--rose-strong);
+    margin: 0 0 6px;
+  }
+  h1{
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 1.15;
+    text-align: center;
+    text-wrap: balance;
+    margin: 0 0 8px;
+  }
+  .sub{
+    text-align: center;
+    color: var(--ink-muted);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 auto 22px;
+    max-width: 340px;
+    text-wrap: balance;
+  }
+
+  /* ---------- controls ---------- */
+  .controls{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .search-wrap{
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .search-wrap svg{
+    position: absolute;
+    left: 14px;
+    width: 16px; height: 16px;
+    color: var(--ink-muted);
+    pointer-events: none;
+  }
+  #search{
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 12px 14px 12px 38px;
+    outline: none;
+  }
+  #search::placeholder{ color: var(--ink-muted); }
+  #search:focus{ border-color: var(--rose); }
+
+  .tabs{
+    display: flex;
+    gap: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 4px;
+  }
+  .tab{
+    flex: 1;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+    padding: 9px 4px;
+    cursor: pointer;
+  }
+  .tab[aria-selected="true"]{
+    background: var(--rose);
+    color: #fff;
+  }
+
+  .count-line{
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    margin: 14px 0 12px;
+  }
+  .count-line strong{ color: var(--ink); font-variant-numeric: tabular-nums; }
+
+  /* ---------- cards ---------- */
+  #list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card{
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 14px 14px 13px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  }
+  .card:active{ transform: scale(0.98); }
+  @media (hover: hover){
+    .card:hover{
+      border-color: var(--rose);
+      box-shadow: 0 10px 24px -14px var(--shadow);
+    }
+  }
+
+  .card-top{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .tag{
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--rose-strong);
+    background: var(--rose-soft);
+    border-radius: 999px;
+    padding: 4px 10px;
+    text-wrap: nowrap;
+  }
+  .tag.men{ color: var(--gold); background: var(--gold-soft); }
+
+  .price{
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .brand-name{
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.3;
+    margin: 0 0 4px;
+  }
+  .note{
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-muted);
+    margin: 0 0 10px;
+  }
+
+  .go{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--rose);
+  }
+  .go svg{ width: 14px; height: 14px; transition: transform .12s ease; }
+  .card:hover .go svg{ transform: translateX(2px); }
+
+  .empty{
+    text-align: center;
+    color: var(--ink-muted);
+    font-size: 13.5px;
+    padding: 40px 20px;
+  }
+
+  footer{
+    text-align: center;
+    color: var(--ink-muted);
+    font-size: 12px;
+    line-height: 1.6;
+    margin-top: 30px;
+  }
+</style>
+
+<div class="page">
+
+  <div class="brand-mark" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 21s-5-4.2-5-9a5 5 0 0 1 10 0c0 4.8-5 9-5 9Z"/>
+      <path d="M12 12V3"/>
+      <path d="M9 6c0-1.5 1.5-3 3-3s3 1.5 3 3"/>
+    </svg>
+  </div>
+
+  <p class="handle">@tulip27110</p>
+  <h1>Tủ đồ xinh của Tulip</h1>
+  <p class="sub">Tổng hợp shop đã mặc &amp; review trên kênh — bấm vào thẻ để mở thẳng shop trên Shopee.</p>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="search" type="text" placeholder="Tìm theo phong cách, brand..." autocomplete="off">
+    </div>
+    <div class="tabs" id="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-filter="all">Tất cả</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="Đồ nữ">Đồ nữ</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="Đồ nam">Đồ nam</button>
+    </div>
+  </div>
+
+  <p class="count-line"><strong id="count">0</strong> shop phù hợp</p>
+
+  <div id="list"></div>
+  <p class="empty" id="empty" hidden>Không tìm thấy shop nào khớp. Thử từ khoá khác nhé.</p>
+
+  <footer>Danh sách cập nhật từ kênh TikTok @tulip27110 · Lưu trang này để quay lại bất cứ lúc nào</footer>
+</div>
+
+<script>
+  const SHOPS = [
+    {style:"Clean girl / Thanh lịch", brand:"Mia Ritta", cat:"Đồ nữ", note:"Đồ basic lịch sự, tôn dáng, chất vải đứng form tốt; hợp đi làm, đi chơi.", price:"150k - 350k", link:"https://s.shopee.vn/904yvntZoz"},
+    {style:"Đáng yêu / Bánh bèo", brand:"Hèo", cat:"Đồ nữ", note:"Nhiều set đồ bánh bèo, đầm babydoll ngọt ngào; phù hợp học sinh - sinh viên.", price:"80k - 200k", link:"https://s.shopee.vn/1gIOCUQFoP"},
+    {style:"Fairycore / Điệu đà", brand:"Sugar crush", cat:"Đồ nữ", note:"Chuyên đầm voan bèo, áo ren thắt nơ kiểu cách; bắt trend Quảng Châu nhanh.", price:"100k - 250k", link:"https://s.shopee.vn/7AdKkerKH3"},
+    {style:"Vintage / Retro / Mori", brand:"Nhiên vintage", cat:"Đồ nữ", note:"Chuyên đồ linen, cotton mát mẻ, đầm suông dài tone trầm mộc mạc; vibe thơ mộng.", price:"180k - 350k", link:"https://s.shopee.vn/60RNMbjif5"},
+    {style:"Nàng thơ / Nữ tính", brand:"SweeticMe", cat:"Đồ nữ", note:"Shopee Mall; đầm voan nhã nhặn, áo blouse, cardigan pastel thanh lịch, nhẹ nhàng.", price:"150k - 350k", link:"https://s.shopee.vn/7VGB9RTKLu"},
+    {style:"Streetwear / Sporty chic", brand:"Augety.st", cat:"Đồ nữ", note:"Shopee Mall; nổi bật với baby tee, hoodie zip năng động, quần cargo bụi bặm; Gen Z ưa chuộng.", price:"150k - 350k", link:"https://s.shopee.vn/4VcZa3UZbI"},
+    {style:"Sexy chic / Sang chảnh", brand:"iam.vietanhsng", cat:"Đồ nữ", note:"Thiết kế cắt xẻ tôn dáng, tone màu trung tính tối giản; hợp đi cafe sống ảo, tiệc nhẹ.", price:"200k - 500k", link:"https://s.shopee.vn/1LfXoLl9nN"},
+    {style:"Ulzzang / Casual dạo phố", brand:"Tiktik_vn", cat:"Đồ nữ", note:"Mẫu mã đa dạng phong phú, giá mềm dẻo; chủ yếu là áo thun dạo phố và đồ basic hằng ngày.", price:"70k - 180k", link:"https://s.shopee.vn/40gIzYXBBt"},
+    {style:"Soft Minimalist / Lịch sự", brand:"_min.st", cat:"Đồ nữ", note:"Phù hợp với ai mê blazer, quần tây, áo sơ mi thiết kế nhã nhặn, cơ bản để đi làm/đi học.", price:"150k - 300k", link:"https://s.shopee.vn/2BEeo9Azfe"},
+    {style:"Streetwear / Grunge / Unisex", brand:"Novarift", cat:"Đồ nữ", note:"Chuyên đồ thun form rộng, cá tính mạnh, có các thiết kế chân váy và quần denim cool ngầu.", price:"180k - 400k", link:"https://s.shopee.vn/7KwkxhkgsQ"},
+    {style:"Y2K / Nổi loạn / Sexy", brand:"THE QUẠO", cat:"Đồ nữ", note:"Shopee Mall; cực hot với baby tee in slogan độc lạ, đầm ôm body tinh nghịch, phá cách.", price:"150k - 350k", link:"https://s.shopee.vn/4fvzmz88RE"},
+    {style:"Streetwear / Unisex", brand:"VIBESTU", cat:"Đồ nữ", note:"Local brand chuyên áo thun boxy, baby tee, hoodie nỉ form rộng cá tính.", price:"150k - 280k", link:"https://s.shopee.vn/112rG3ZVMU"},
+    {style:"Casual / Streetwear", brand:"ThePalm", cat:"Đồ nữ", note:"Chuyên áo thun, áo raglan form boxy năng động, hoạ tiết chữ đơn giản, dễ phối đồ.", price:"250k - 350k", link:"https://s.shopee.vn/1BMHSMYs1X"},
+    {style:"Nàng thơ / Bánh bèo", brand:"Angel-Land", cat:"Đồ nữ", note:"Nhiều mẫu đầm váy thiết kế nữ tính, nhẹ nhàng, phù hợp đi chơi, hẹn hò.", price:"150k - 300k", link:"https://s.shopee.vn/1LfhefYEga"},
+    {style:"Ulzzang / Năng động", brand:"Eddiestu", cat:"Đồ nữ", note:"Thời trang basic Hàn Quốc, năng động dễ mặc hằng ngày, hợp gu giới trẻ.", price:"100k - 250k", link:"https://s.shopee.vn/1Vz7qyXbLd"},
+    {style:"Nổi loạn / Cá tính", brand:"Kaching Worldwide", cat:"Đồ nữ", note:"Áo thun 100% cotton in slogan chữ độc lạ, vui nhộn, form boxy cực chất.", price:"200k - 300k", link:"https://s.shopee.vn/1gIY3HWy0g"},
+    {style:"Y2K / Sexy chic", brand:"Lollie", cat:"Đồ nữ", note:"Đồ nữ thiết kế ôm dáng, cắt xẻ nhẹ nhàng, tôn đường cong quyến rũ.", price:"150k - 350k", link:"https://s.shopee.vn/8pliax9WTJ"},
+    {style:"Soft Minimalist / Basic", brand:"Aufra", cat:"Đồ nữ", note:"Thời trang ứng dụng cao, màu sắc trung tính thanh lịch dễ phối đồ công sở.", price:"180k - 400k", link:"https://s.shopee.vn/9058nG8t8M"},
+    {style:"Clean girl / Dạo phố", brand:"Tosun", cat:"Đồ nữ", note:"Quần áo nữ form thoải mái, chất liệu mát mẻ phù hợp mặc đi làm, đi dạo.", price:"150k - 300k", link:"https://s.shopee.vn/9AOYzZ8FnP"},
+    {style:"Đáng yêu / Bánh bèo", brand:"Dob", cat:"Đồ nữ", note:"Các set đồ trẻ trung, năng động, nhiều mẫu áo kiểu xinh xắn cho học sinh sinh viên.", price:"100k - 250k", link:"https://s.shopee.vn/80CbbQChAC"},
+    {style:"Minimalism / Lịch lãm", brand:"Pealo", cat:"Đồ nam", note:"Quần âu, áo thun gân body, sơ mi nam chất liệu cao cấp phom dáng Hàn Quốc.", price:"200k - 500k", link:"https://s.shopee.vn/9AOYzuUE2x"},
+    {style:"Smart Casual / Tối giản", brand:"B Brown Studio", cat:"Đồ nam", note:"Áo thun, sơ mi nam basic, thiết kế màu sắc trầm ấm thanh lịch và tinh tế.", price:"200k - 400k", link:"https://s.shopee.vn/1LfhfVy2wS"},
+    {style:"Nam tính / Bụi bặm", brand:"De Basé", cat:"Đồ nam", note:"Các item denim, quần jean, áo khoác nam tính mang đậm phong cách đường phố.", price:"250k - 500k", link:"https://s.shopee.vn/1Vz7roxPbV"},
+    {style:"Streetwear / Form rộng", brand:"whose.studio", cat:"Đồ nam", note:"Đồ nam unisex form rộng rãi thoải mái, phong cách trẻ trung cá tính.", price:"150k - 350k", link:"https://s.shopee.vn/1gIY47wmGY"},
+    {style:"Local Brand / Nổi bật", brand:"GODMOTHER", cat:"Đồ nam", note:"Áo thun in artwork, thiết kế form hộp mạnh mẽ và cá tính cho nam giới.", price:"200k - 400k", link:"https://s.shopee.vn/1qbyGQw8vb"},
+    {style:"Điệu đà / Nữ tính", brand:"Moodie Girls", cat:"Đồ nữ", note:"Đầm váy, áo kiểu thiết kế bắt mắt, hợp đi tiệc nhẹ sinh nhật hoặc cafe sống ảo.", price:"180k - 350k", link:"https://s.shopee.vn/8plibZPJZn"},
+    {style:"Sang chảnh / Sexy", brand:"Rosier De Lux", cat:"Đồ nữ", note:"Trang phục thiết kế cao cấp, chất liệu xịn, tôn dáng phù hợp đi event, tiệc tùng.", price:"300k - 600k", link:"https://s.shopee.vn/1qbyGhpxmS"},
+    {style:"Đáng yêu / Bánh bèo", brand:"DaaLaa Store", cat:"Đồ nữ", note:"Nhiều mẫu đồ xinh xắn, áo thun nữ họa tiết chấm bi, bồng bềnh nữ tính.", price:"Dưới 100k", link:"https://s.shopee.vn/AUtwgHdgqh"},
+    {style:"Ulzzang / Năng động", brand:"Tharo Clothing", cat:"Đồ nữ", note:"Áo thun tay ngắn kiểu bồng, áo thun tay lửng form rộng trẻ trung.", price:"Dưới 100k", link:"https://s.shopee.vn/9KhzI8i8DU"},
+    {style:"Soft Minimalist / Lịch sự", brand:"BYJANE.HN", cat:"Đồ nữ", note:"Đồ nữ basic, thiết kế nhã nhặn, cơ bản dễ phối đồ.", price:"Dưới 100k", link:"https://s.shopee.vn/9V1PURhUsX"},
+    {style:"Casual / Dạo phố", brand:"Store Chinh Trần", cat:"Đồ nữ", note:"Áo thun kiểu dáng đa dạng, nhiều lựa chọn mặc hằng ngày.", price:"Dưới 100k", link:"https://s.shopee.vn/9fKpgkgrXa"},
+    {style:"Y2K / Nổi loạn", brand:"Kimcuongsokiuu", cat:"Đồ nữ", note:"Áo thun phong cách cá tính, thiết kế độc đáo.", price:"Dưới 100k", link:"https://s.shopee.vn/qjRAaHPaz"},
+    {style:"Fairycore / Điệu đà", brand:"Secodee", cat:"Đồ nữ", note:"Chuyên áo ren, đầm bèo nhún điệu đà, phối đồ cực có gu.", price:"Từ 200k+", link:"https://s.shopee.vn/9zxg5V7VIP"},
+    {style:"Nữ tính / Sống ảo", brand:"Reigirl.vn", cat:"Đồ nữ", note:"Chuyên các mẫu áo trễ vai có gu, tôn dáng quyến rũ.", price:"Dưới 150k", link:"https://s.shopee.vn/8V8sKJASye"},
+    {style:"Thanh lịch / Tối giản", brand:"EMLY.VN", cat:"Đồ nữ", note:"Quần áo nữ form thoải mái, màu sắc nhã nhặn dễ mặc đi làm/đi học.", price:"Dưới 150k", link:"https://s.shopee.vn/1gIZntiFju"},
+    {style:"Giá rẻ / Form xinh", brand:"DEROSE SAIGON", cat:"Đồ nữ", note:"Form quần xinh, giá rẻ.", price:"", link:"https://s.shopee.vn/2qUYsramxF"},
+    {style:"Nội y / Basic", brand:"Bra tokyolife", cat:"Đồ nữ", note:"Bra bền, không lộ viền, giá mềm.", price:"150k - 450k", link:"https://s.shopee.vn/1ARspSGtc"},
+    {style:"Nội y / Bền form", brand:"Corèle V Official Store", cat:"Đồ nữ", note:"Gọng mềm, cúp ôm; giặt máy cả năm rưỡi vẫn giữ form.", price:"", link:"https://s.shopee.vn/4B00qj5SMS"},
+  ];
+
+  const listEl = document.getElementById("list");
+  const emptyEl = document.getElementById("empty");
+  const countEl = document.getElementById("count");
+  const searchEl = document.getElementById("search");
+  const tabsEl = document.getElementById("tabs");
+
+  let activeFilter = "all";
+
+  function escapeHtml(str){
+    return str.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+
+  function render(){
+    const q = searchEl.value.trim().toLowerCase();
+    const items = SHOPS.filter(s => {
+      if (activeFilter !== "all" && s.cat !== activeFilter) return false;
+      if (!q) return true;
+      return (s.style + " " + s.brand + " " + s.note).toLowerCase().includes(q);
+    });
+
+    countEl.textContent = items.length;
+    emptyEl.hidden = items.length !== 0;
+
+    listEl.innerHTML = items.map(s => `
+      <a class="card" href="${s.link}" target="_blank" rel="nofollow noopener">
+        <div class="card-top">
+          <span class="tag${s.cat === "Đồ nam" ? " men" : ""}">${escapeHtml(s.style)}</span>
+          ${s.price ? `<span class="price">${escapeHtml(s.price)}</span>` : ""}
+        </div>
+        <p class="brand-name">${escapeHtml(s.brand)}</p>
+        <p class="note">${escapeHtml(s.note)}</p>
+        <span class="go">Mở shop
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </span>
+      </a>
+    `).join("");
+  }
+
+  searchEl.addEventListener("input", render);
+  tabsEl.addEventListener("click", e => {
+    const btn = e.target.closest(".tab");
+    if (!btn) return;
+    tabsEl.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", "false"));
+    btn.setAttribute("aria-selected", "true");
+    activeFilter = btn.dataset.filter;
+    render();
+  });
+
+  render();
+</script>
