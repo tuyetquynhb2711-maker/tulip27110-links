@@ -177,11 +177,12 @@
     gap: 10px;
   }
   .card{
-    display: block;
+    display: flex;
+    gap: 12px;
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 18px;
-    padding: 14px 14px 13px;
+    padding: 12px 14px 12px 12px;
     text-decoration: none;
     color: var(--ink);
     transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
@@ -193,6 +194,32 @@
       box-shadow: 0 10px 24px -14px var(--shadow);
     }
   }
+
+  .thumb{
+    flex-shrink: 0;
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .thumb svg{ width: 24px; height: 24px; position: relative; z-index: 1; }
+  .thumb .mono{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 4px 5px;
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .card-body{ min-width: 0; flex: 1; }
 
   .card-top{
     display: flex;
@@ -366,6 +393,38 @@
     return str.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   }
 
+  // Thumbnail = gradient theo tên brand + icon loại + chữ cái đầu, thay cho ảnh thật
+  // (Shopee không cho lấy ảnh tự động, dùng monogram cho tới khi có ảnh thật)
+  const GRADIENTS = [
+    ["#F2A6B8", "#E24E71"],
+    ["#F6C98A", "#C98A2E"],
+    ["#B9A0E0", "#7A5CC9"],
+    ["#8FD0C9", "#2E9A8C"],
+    ["#F2A6B8", "#C93A5C"],
+    ["#A7C6E8", "#4472B8"],
+  ];
+  const ICONS = {
+    women: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-5-4.2-5-9a5 5 0 0 1 10 0c0 4.8-5 9-5 9Z"/><path d="M12 12V3"/><path d="M9 6c0-1.5 1.5-3 3-3s3 1.5 3 3"/></svg>',
+    men: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 3 3 2 3-2 3 3-2 2v12a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1V8L6 6Z"/></svg>',
+    gift: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M4 9h16M12 9v11M12 9c-1.6 0-4-1-4-3.2A2.3 2.3 0 0 1 10.3 3C12 3 12 6 12 9Zm0 0c1.6 0 4-1 4-3.2A2.3 2.3 0 0 0 13.7 3C12 3 12 6 12 9Z"/></svg>',
+  };
+
+  function hashStr(str){
+    let h = 0;
+    for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+    return h;
+  }
+
+  function thumbHtml(s){
+    const [c1, c2] = GRADIENTS[hashStr(s.brand) % GRADIENTS.length];
+    const icon = s.cat === "Quà tặng" ? ICONS.gift : s.cat === "Đồ nam" ? ICONS.men : ICONS.women;
+    const initial = s.brand.trim().charAt(0).toUpperCase();
+    return `<div class="thumb" style="background:linear-gradient(155deg, ${c1}, ${c2})">
+      ${icon}
+      <span class="mono">${escapeHtml(initial)}</span>
+    </div>`;
+  }
+
   function render(){
     const q = searchEl.value.trim().toLowerCase();
     const items = SHOPS.filter(s => {
@@ -381,15 +440,18 @@
       const tagClass = s.cat === "Quà tặng" ? "gift" : s.cat === "Đồ nam" ? "men" : "";
       return `
       <a class="card" href="${s.link}" target="_blank" rel="nofollow noopener">
-        <div class="card-top">
-          <span class="tag${tagClass ? " " + tagClass : ""}">${escapeHtml(s.style)}</span>
-          ${s.price ? `<span class="price">${escapeHtml(s.price)}</span>` : ""}
+        ${thumbHtml(s)}
+        <div class="card-body">
+          <div class="card-top">
+            <span class="tag${tagClass ? " " + tagClass : ""}">${escapeHtml(s.style)}</span>
+            ${s.price ? `<span class="price">${escapeHtml(s.price)}</span>` : ""}
+          </div>
+          <p class="brand-name">${escapeHtml(s.brand)}</p>
+          ${s.note ? `<p class="note">${escapeHtml(s.note)}</p>` : ""}
+          <span class="go">Mở shop
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </span>
         </div>
-        <p class="brand-name">${escapeHtml(s.brand)}</p>
-        ${s.note ? `<p class="note">${escapeHtml(s.note)}</p>` : ""}
-        <span class="go">Mở shop
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-        </span>
       </a>
     `;
     }).join("");
